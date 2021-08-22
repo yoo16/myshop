@@ -14,8 +14,7 @@ class HomeController extends Controller
     {
         //商品取得
         $item = new Item();
-        $item->all();
-        shuffle($item->values);
+        $item->randomList();
 
         //お知らせ取得
         $information = new Information();

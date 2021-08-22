@@ -44,15 +44,13 @@ class Model
      * 
      * @return array
      */
-    function saveCsv($data)
+    function saveCsv($data, $path)
     {
-        $path = DATA_DIR . 'purchase.csv';
         //初回作成＆ヘッダー追加
         if (!file_exists($path)) {
-            if ($handle = fopen($path, 'w')) {
+            if ($handle = fopen($path, 'w+')) {
                 $columns = array_keys($data);
                 fputcsv($handle, $columns);
-                chmod($path, 0666);
                 fclose($handle);
             }
         }
@@ -94,21 +92,6 @@ class Model
     }
 
     /**
-     * index を id にする
-     * 
-     * @param int $id
-     * @return array
-     */
-    function pluckByID()
-    {
-        if (!$this->values) return;
-        foreach ($this->values as $value) {
-            $values[$value['id']] = $value;
-        }
-        return $values;
-    }
-
-    /**
      * データ一覧を取得
      * 
      * @return
@@ -116,7 +99,6 @@ class Model
     function randomList($count = 3)
     {
         $this->all();
-        if (!$this->values) return;
         $keys = array_rand($this->values, $count);
         foreach ($keys as $key) {
             $values[] = $this->values[$key];

@@ -22,18 +22,21 @@
         </div>
 
         <div class="item mt-5">
-            <h3 class="h3">ピックアップ商品</h3>
+            <h3 class="h3 mt-3 mb-3">ピックアップ商品</h3>
             <div class="container">
                 <div class="row">
-                    <?php for ($i = 1; $i <= 3; $i++) :  ?>
+                    <?php foreach ($item->values as $value) :  ?>
                         <div class="card col-lg-3 col-md-4 border-0">
                             <img src="images/now_printing.png" alt="">
                             <div class="card-body">
-                                <h5 class="card-title"><?= $item->values[$i]['name'] ?></h5>
-                                <p class="card-text text-right"><?= $item->values[$i]['price'] ?>円</p>
+                                <p class="fw-bold"><?= $value['name'] ?></p>
+                                <p class="text-end"><?= $value['price'] ?>円</p>
+                                <p class="text-center">
+                                    <a href="<?= BASE_URL ?>cart/add.php?item_id=<?= $value['id'] ?>" class="btn btn-sm btn-primary">カートに入れる</a>
+                                </p>
                             </div>
                         </div>
-                    <?php endfor ?>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>

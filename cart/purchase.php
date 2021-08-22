@@ -1,15 +1,7 @@
 <?php
 require_once('../setting.php');
+require_once('app.php');
+require_once('app/controllers/CartController.php');
 
-$user = new User();
-if (!$user->isLogined()) {
-    header('Location: ../index.php');
-}
-
-if (isset($_POST)) {
-    $cart = new Cart();
-    $cart->purchase($user);
-    $cart->clearAll();
-}
-
-header("Location: result.php");
+$controller = new CartController();
+$controller->purchase();

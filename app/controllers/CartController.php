@@ -50,4 +50,23 @@ class CartController extends Controller
         }
         $this->redirect('index.php');
     }
+
+    public function purchase()
+    {
+        if (!$_SERVER['REQUEST_METHOD'] == 'POST') return;
+        $cart = new Cart();
+
+        $_SESSION[APP_NAME]['is_success'] = $cart->purchase($this->user);
+        $this->redirect('result.php');
+    }
+
+    public function result()
+    {
+        if (empty($_SESSION[APP_NAME]['is_success'])) {
+            $this->redirect('../');
+        } else {
+            unset($_SESSION[APP_NAME]['is_success']);
+            include 'app/views/cart/result.view.php';
+        }
+    }
 }

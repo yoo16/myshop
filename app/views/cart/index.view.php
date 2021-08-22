@@ -9,7 +9,7 @@
     <div class="container">
         <?php if (!$this->cart->values) : ?>
             <p class="alert alert-info">商品カートが空です</p>
-            <p>
+            <p class="text-center">
                 <a class="btn btn-outline-primary" href="<?= BASE_URL ?>item/">商品一覧</a>
             </p>
         <?php else : ?>

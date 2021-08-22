@@ -17,8 +17,6 @@ class Cart extends Model
     /**
      * カート商品一覧を取得
      * オーバーライド
-     * 
-     * @return array
      */
     function all()
     {
@@ -32,7 +30,10 @@ class Cart extends Model
                 $value['amount'] = $amount;
                 $this->values[] = $value;
 
+                //トータル個数
                 $this->total_amount += $amount;
+
+                //トータル金額
                 $this->total_price += $item->value['price'] * $amount;
             }
         }
@@ -122,19 +123,23 @@ class Cart extends Model
     {
         if (!$user->value['id']) return;
 
+        $path = DATA_DIR . 'purchase.csv';
         $this->all();
         if (!$this->values) return;
-        foreach ($this->values as $item_id => $amount) {
+        foreach ($this->values as $value) {
             $item = new Item();
-            $item->find($item_id);
+            $item->find($value['item']['id']);
 
-            $value['user_id'] = $user->value['id'];
-            $value['item_id'] = $item_id;
-            $value['amount'] = $amount;
-            $value['price'] = $item->value['price'];
-            $value['total_price'] = $item->value['price'] * $amount;
-            $value['created_at'] = date('Y/m/d H:i:s');
-            $this->saveCsv($value);
+            $data['user_id'] = $user->value['id'];
+            $data['item_id'] = $item->value['id'];
+            $data['amount'] = $value['amount'];
+            $data['price'] = $item->value['price'];
+            $data['total_price'] = $item->value['price'] * $value['amount'];
+            $data['created_at'] = date('Y/m/d H:i:s');
+
+            $this->saveCsv($data, $path);
         }
+        $this->clearAll();
+        return true;
     }
 }
