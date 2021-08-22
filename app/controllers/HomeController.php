@@ -1,11 +1,21 @@
 <?php
-class HomeController
+require_once 'Controller.php';
+class HomeController extends Controller
 {
+    public $user;
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
+
     public function index()
     {
         //商品取得
         $item = new Item();
         $item->all();
+        shuffle($item->values);
 
         //お知らせ取得
         $information = new Information();
@@ -15,7 +25,7 @@ class HomeController
         //アクセスカウンタ
         $access_count = $this->updateAccessCount();
 
-        include VIEWS_DIR.'home/index.view.php';
+        include 'app/views/home/index.view.php';
     }
 
     /**

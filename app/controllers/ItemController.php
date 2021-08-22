@@ -1,13 +1,14 @@
 <?php
-class ItemController
+require_once 'Controller.php';
+class ItemController extends Controller
 {
+    function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-        $user = new User();
-        if (!$user->isLogined()) {
-            header('Location: ../index.php');
-        }
-
         $item = new Item();
         $item->all();
 

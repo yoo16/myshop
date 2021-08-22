@@ -10,7 +10,7 @@
                 <form action="auth.php" method="post">
                     <h3 class="h3 mb-3 fw-normal">Sign In</h3>
                     <div class="form-floating">
-                        <input type="text" name="email" class="form-control" id="input" value="<?= $user->value['email'] ?>">
+                        <input type="text" name="email" class="form-control" id="input">
                         <label for="input">Email</label>
                     </div>
                     <div class="form-floating">

@@ -1,36 +1,33 @@
 <?php
-class LoginController
+require_once 'Controller.php';
+class LoginController extends Controller
 {
-    /**
-     * ログイン処理
-     */
     public function index()
     {
         $user = new User();
-        include VIEWS_DIR . 'login/index.view.php';
+        include 'app/views/login/index.view.php';
     }
 
     public function auth()
     {
+        if (!$_SERVER['REQUEST_METHOD'] == 'POST') return;
         $user = new User();
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $user->login($_POST['email'], $_POST['password']);
-            if ($user->isLogined()) {
-                header('Location: ../item/index.php');
-                exit;
-            }
+        $user->auth($_POST['email'], $_POST['password']);
+        if ($user->value['id']) {
+            $this->redirect('../item/index.php');
+        } else {
+            $this->redirect('./');
         }
-        header('Location: ./');
     }
 
     public function logout()
     {
         $user = new User();
         $user->logout();
-        
+
         $cart = new Cart();
         $cart->clearAll();
-        
-        header('Location: login/');
+
+        $this->redirect('../');
     }
 }

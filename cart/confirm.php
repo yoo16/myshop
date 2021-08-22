@@ -4,4 +4,4 @@ require_once('app.php');
 require_once('app/controllers/CartController.php');
 
 $controller = new CartController();
-$controller->index();
+$controller->confirm();

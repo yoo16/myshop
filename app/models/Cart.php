@@ -3,6 +3,8 @@ require_once 'Model.php';
 
 class Cart extends Model
 {
+    public $total_price = 0;
+    public $total_amount = 0;
 
     /**
      * コンストラクタ
@@ -29,6 +31,9 @@ class Cart extends Model
                 $value['item_id'] = $item_id;
                 $value['amount'] = $amount;
                 $this->values[] = $value;
+
+                $this->total_amount += $amount;
+                $this->total_price += $item->value['price'] * $amount;
             }
         }
     }
@@ -75,44 +80,38 @@ class Cart extends Model
     }
 
     /**
-     * カート追加
+     * カート個数更新
      * 
      * @param int $item_id
      * @param int $amount
      */
     function update($item_id, $amount)
     {
-        if (isset($item_id) && isset($amount)) {
+        if ($amount > 0) {
             $_SESSION[APP_NAME]['cart'][$item_id] = $amount;
+        }
+    }
+
+    /**
+     * カート一括更新
+     * 
+     * @param array $values
+     */
+    function updates($values)
+    {
+        foreach ($values as $item_id => $amount) {
+            $this->update($item_id, $amount);
         }
     }
 
     /**
      * カート全削除
      * 
-     * @param int $item_id
      */
     function clearAll()
     {
         if (isset($_SESSION[APP_NAME]['cart'])) {
-<<<<<<< HEAD:app/models/Cart.php
-            $this->values = $_SESSION[APP_NAME]['cart'];
-        }
-        return $this->values;
-=======
             unset($_SESSION[APP_NAME]['cart']);
-        }
-    }
-
-    /**
-     * 計算処理
-     */
-    function calculate()
-    {
-        $this->total_price = 0;
-        if (!$this->values) return;
-        foreach ($this->values as $value) {
-            $this->total_price += $value['item']['price'];
         }
     }
 
@@ -137,6 +136,5 @@ class Cart extends Model
             $value['created_at'] = date('Y/m/d H:i:s');
             $this->saveCsv($value);
         }
->>>>>>> cb5701d6e9eceeb91af0234fef9719d149f4e131:models/Cart.php
     }
 }

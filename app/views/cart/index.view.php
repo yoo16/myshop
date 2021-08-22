@@ -4,38 +4,44 @@
 <?php include('app/views/components/head.php') ?>
 
 <body>
-    <?php include('app/views/components/user_nav.php') ?>
+    <?php include('app/views/components/nav.php') ?>
 
     <div class="container">
-        <?php if (!$cart->values) : ?>
-            <p>商品カートが空です</p>
+        <?php if (!$this->cart->values) : ?>
+            <p class="alert alert-info">商品カートが空です</p>
             <p>
-                <a href="../index.php">商品一覧へ</a>
+                <a class="btn btn-outline-primary" href="<?= BASE_URL ?>item/">商品一覧</a>
             </p>
         <?php else : ?>
             <form class="form-inline" action="updates.php" method="post">
-                <table class="table">
-                    <tr>
-                        <th>商品名</th>
-                        <th>価格</th>
-                        <th>個数</th>
-                        <th><button class="btn btn-primary">更新</button></th>
-                    </tr>
-                    <?php if ($cart->values) : ?>
-                        <?php foreach ($cart->values as $item_id => $amount) :  ?>
-                            <tr>
-                                <td><?= $items[$item_id]['name'] ?></td>
-                                <td class="text-right"><?= $items[$item_id]['price'] ?>円</td>
-                                <td class="col-3 col-lg-1 col-md-2">
-                                    <input class="text-right form-control" type="number" name="amounts[<?= $item_id ?>]" value="<?= $amount ?>">
-                                </td>
-                                <td class="col-3 col-lg-1 col-md-2">
-                                    <a class="btn btn-danger" href="clear.php?item_id=<?= $item_id ?>">削除</a>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php endif ?>
-                </table>
+                <h2 class="h2 mt-3 mb-3">ショッピングカート</h2>
+                <?php if ($this->cart->values) : ?>
+                    <?php foreach ($this->cart->values as $cart) :  ?>
+                        <div class="row mt-1">
+                            <div class="col-3">
+                                <img class="" src="<?= BASE_URL ?>images/now_printing.png" width="100">
+                            </div>
+                            <div class="col-5">
+                                <p><?= $cart['item']['name'] ?></p>
+                                <p>¥<?= $cart['item']['price'] ?></p>
+                            </div>
+                            <div class="col-2">
+                                <input class="text-end form-control" type="number" name="amounts[<?= $cart['item']['id'] ?>]" value="<?= $cart['amount'] ?>" min="0">
+                            </div>
+                            <div class="col-2 text-end">
+                                <a class="btn btn-sm btn-danger" href="clear.php?item_id=<?= $cart['item']['id'] ?>">削除</a>
+                            </div>
+                        </div>
+                    <?php endforeach ?>
+                    <div class="text-end mt-1 fw-bold">
+                        <label for="">小計：</label>
+                        ¥<?= $this->cart->total_price ?>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-sm btn-outline-primary">更新</button>
+                        <a href="confirm.php" class="btn btn-sm btn-primary">レジに進む</a>
+                    </div>
+                <?php endif ?>
             </form>
         <?php endif ?>
     </div>

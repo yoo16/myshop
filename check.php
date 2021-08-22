@@ -5,7 +5,7 @@ require_once('setting.php');
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include(VIEWS_DIR.'header.php') ?>
+<?php include('app/views/header.php') ?>
 
 <body>
     <h2>SITE_TITLE</h2>
@@ -18,6 +18,6 @@ require_once('setting.php');
     <?= VIEWS_DIR ?>
 
     <h2>header.php</h2>
-    <?= VIEWS_DIR.'header.php' ?>
+    <?= 'app/views/header.php' ?>
 </body>
 </html>

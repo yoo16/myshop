@@ -4,7 +4,7 @@
 <?php include('app/views/components/head.php') ?>
 
 <body>
-    <?php include('app/views/components/user_nav.php') ?>
+    <?php include('app/views/components/nav.php') ?>
     <div class="container">
         <div class="row">
             <?php foreach ($item->values as $value) :  ?>
@@ -16,7 +16,7 @@
                         <h5 class="card-title"><?= $value['name'] ?></h5>
                         <p class="card-text"><?= $value['price'] ?>円</p>
                         <p class="text-center">
-                            <a href="../cart/add.php?item_id=<?= $value['id'] ?>" class="btn btn-primary">カートに入れる</a>
+                            <a href="<?= BASE_URL ?>cart/add.php?item_id=<?= $value['id'] ?>" class="btn btn-sm btn-primary">カートに入れる</a>
                         </p>
                     </div>
                 </div>

@@ -10,9 +10,6 @@ class User extends Model
         'password' => '',
     ];
 
-    /**
-     * コンストラクタ
-     */
     function __construct()
     {
         parent::__construct();
@@ -40,7 +37,7 @@ class User extends Model
     {
         //user セッション判別
         $this->authUser();
-        return ($this->value);
+        return ($this->value['id']);
     }
 
     /**
@@ -48,28 +45,18 @@ class User extends Model
      * 
      * @param string $item_id
      * @param string $password
-     * @return array
+     * @return void
      */
-<<<<<<< HEAD:app/models/User.php
-    function login($email, $password)
+    function auth($email, $password)
     {
         $value = $this->findByEmail($email);
-=======
-    function auth($login_name, $password)
-    {
-        if (empty($login_name) || empty($password)) {
-            return;
-        }
-        $value = $this->searchByLoginName($login_name);
         if (!$value) return;
->>>>>>> cb5701d6e9eceeb91af0234fef9719d149f4e131:models/User.php
         //ログイン名チェック
         if ($value['email'] == $email) {
             //ハッシュパスワードチェック
             if (password_verify($password, $value['password'])) {
                 //user セッション登録、データ設定
                 $_SESSION[APP_NAME]['user'] = $this->value = $value;
-                return $this->value;
             }
         }
     }

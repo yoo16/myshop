@@ -1,19 +1,27 @@
 <?php
-class CartController
+require_once 'Controller.php';
+class CartController extends Controller
 {
+    public $cart;
+    public $user;
+
+    function __construct()
+    {
+        parent::__construct();
+
+        if (!$this->user->value['id']) {
+            $this->redirect(BASE_URL);
+        }
+    }
+
     public function index()
     {
-        $user = new User();
-        if (!$user->isLogined()) {
-            header('Location: ../index.php');
-        }
-
-        $item = new Item();
-        $items = $item->pluckByID();
-
-        $cart = new Cart();
-        $cart->all();
         include 'app/views/cart/index.view.php';
+    }
+
+    public function confirm()
+    {
+        include 'app/views/cart/confirm.view.php';
     }
 
     public function add()
@@ -22,16 +30,16 @@ class CartController
             $cart = new Cart();
             $cart->add($_GET['item_id']);
         }
-        header("Location: index.php");
+        $this->redirect('index.php');
     }
 
     public function updates()
     {
-        if (isset($_POST)) {
+        if (isset($_POST['amounts'])) {
             $cart = new Cart();
             $cart->updates($_POST['amounts']);
         }
-        header("Location: index.php");
+        $this->redirect('index.php');
     }
 
     public function clear()
@@ -40,6 +48,6 @@ class CartController
             $cart = new Cart();
             $cart->clear($_GET['item_id']);
         }
-        header("Location: index.php");
+        $this->redirect('index.php');
     }
 }
